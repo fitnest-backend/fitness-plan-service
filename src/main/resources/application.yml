@@ -20,9 +20,9 @@ spring:
   application:
     name: fitness-plan-service
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://fitness-plan-db:5432/fitness_plan_db}
-    username: ${SPRING_DATASOURCE_USERNAME:user}
-    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgresql-fitness-plan:5432/fitnest_fitness_plan}
+    username: ${SPRING_DATASOURCE_USERNAME:fitnest_fitness_plan}
+    password: ${SPRING_DATASOURCE_PASSWORD:fitness_plan_password_123}
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 30000
