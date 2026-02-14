@@ -138,6 +138,5 @@ springdoc:
 
 logging:
   level:
-    az.fitnest.fitnessplan: DEBUG
-    feign.Logger: DEBUG
-
+    az.fitnest.fitnessplan: NONE
+    feign.Logger: NONE
