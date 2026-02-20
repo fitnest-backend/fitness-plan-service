@@ -101,11 +101,11 @@ jwt:
 
 identity:
   service:
-    url: ${IDENTITY_SERVICE_URL:http://identity-service:9090}
+    url: ${IDENTITY_SERVICE_URL:http://identity-service:8080}
 
 media:
   service:
-    url: ${STORAGE_SERVICE_URL:http://storage-service:9090}
+    url: ${STORAGE_SERVICE_URL:http://storage-service:8080}
 
 management:
   endpoints:
