@@ -25,9 +25,7 @@ public class FeignConfig {
             String userId = String.valueOf(UserContext.getCurrentUserId());
             String email = UserContext.getCurrentUserEmail();
 
-            if (userId != null && !userId.equals("null")) {
-                requestTemplate.header("X-User-Id", userId);
-            }
+            // Do NOT forward X-User-Id; services should extract user id from Authorization JWT.
             if (email != null) {
                 requestTemplate.header("X-User-Email", email);
             }
