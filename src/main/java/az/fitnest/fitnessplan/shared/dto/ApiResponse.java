@@ -1,42 +1,42 @@
 package az.fitnest.fitnessplan.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
 
-    private final LocalDateTime timestamp = LocalDateTime.now();
-    private final boolean success;
-    private final T data;
-    private final ApiError error;
+    private T data;
+    private ApiError error;
+
+    @JsonValue
+    public Object asJson() {
+        if (error != null) {
+            return Map.of("error", error);
+        }
+        return data;
+    }
 
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
-                .success(true)
                 .data(data)
                 .build();
     }
 
-    public static <T> ApiResponse<T> error(String code, String message) {
+    public static <T> ApiResponse<T> error(ApiError apiError) {
         return ApiResponse.<T>builder()
-                .success(false)
-                .error(new ApiError(code, message))
+                .error(apiError)
                 .build();
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class ApiError {
-        private final String code;
-        private final String message;
     }
 }
