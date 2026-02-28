@@ -21,24 +21,24 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/nutrition-plans")
 @RequiredArgsConstructor
-@Tag(name = "Nutrition Plans", description = "Endpoints for browsing and managing nutrition plans")
+@Tag(name = "Nutrition Plans", description = "Qidalanma planlarına baxmaq və idarə etmək üçün ucluqlar")
 public class NutritionPlanController {
 
     private final NutritionPlansService nutritionPlansService;
 
     @Operation(
-            summary = "Get all nutrition plans",
-            description = "Returns a list of all available nutrition plans for the authenticated user."
+            summary = "Bütün qidalanma planlarını əldə edin",
+            description = "Autentifikasiya olunmuş istifadəçi üçün bütün mövcud qidalanma planlarının siyahısını qaytarır."
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "200",
-                    description = "Nutrition plans retrieved successfully",
+                    description = "Qidalanma planları uğurla əldə edildi",
                     content = @Content(schema = @Schema(implementation = NutritionPlanResponses.class))
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "401",
-                    description = "Unauthorized",
+                    description = "İcazə verilmədi",
                     content = @Content
             )
     })
@@ -48,57 +48,57 @@ public class NutritionPlanController {
     }
 
     @Operation(
-            summary = "Get nutrition plan by ID",
-            description = "Returns detailed information about a specific nutrition plan including meals and nutritional breakdown."
+            summary = "Qidalanma planını ID vasitəsilə əldə edin",
+            description = "Yeməklər və qida dəyərləri daxil olmaqla xüsusi qidalanma planı haqqında ətraflı məlumat qaytarır."
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "200",
-                    description = "Nutrition plan details retrieved successfully",
+                    description = "Qidalanma planı təfərrüatları uğurla əldə edildi",
                     content = @Content(schema = @Schema(implementation = NutritionPlanResponse.class))
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "401",
-                    description = "Unauthorized",
+                    description = "İcazə verilmədi",
                     content = @Content
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "404",
-                    description = "Nutrition plan not found",
+                    description = "Qidalanma planı tapılmadı",
                     content = @Content
             )
     })
     @GetMapping("/{planId}")
     public ResponseEntity<ApiResponse<NutritionPlanResponse>> getNutritionPlan(
-            @Parameter(description = "ID of the nutrition plan") @PathVariable Long planId) {
+            @Parameter(description = "Qidalanma planının ID-si") @PathVariable Long planId) {
         return ResponseEntity.ok(ApiResponse.success(nutritionPlansService.getNutritionPlan(planId)));
     }
 
     @Operation(
-            summary = "Activate a nutrition plan",
-            description = "Activates a specific nutrition plan for the authenticated user. " +
-                    "Only one nutrition plan can be active at a time."
+            summary = "Qidalanma planını aktivləşdirin",
+            description = "Autentifikasiya olunmuş istifadəçi üçün xüsusi qidalanma planını aktivləşdirir. " +
+                    "Eyni anda yalnız bir qidalanma planı aktiv ola bilər."
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "200",
-                    description = "Nutrition plan activated successfully",
+                    description = "Qidalanma planı uğurla aktivləşdirildi",
                     content = @Content
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "401",
-                    description = "Unauthorized",
+                    description = "İcazə verilmədi",
                     content = @Content
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "404",
-                    description = "Nutrition plan not found",
+                    description = "Qidalanma planı tapılmadı",
                     content = @Content
             )
     })
     @PostMapping("/{planId}/active")
     public ResponseEntity<ApiResponse<Void>> activateNutritionPlan(
-            @Parameter(description = "ID of the nutrition plan to activate") @PathVariable Long planId) {
+            @Parameter(description = "Aktivləşdiriləcək qidalanma planının ID-si") @PathVariable Long planId) {
         nutritionPlansService.activateNutritionPlan(planId);
         return ResponseEntity.ok(ApiResponse.success(null));
     }

@@ -23,23 +23,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/workout-plans")
 @RequiredArgsConstructor
-@Tag(name = "Workout Plans", description = "Endpoints for browsing and managing workout plans")
+@Tag(name = "Workout Plans", description = "Məşq planlarına baxmaq və idarə etmək üçün ucluqlar")
 public class WorkoutPlanController {
     
     @Operation(
-            summary = "Get all workout plans",
-            description = "Returns a list of all available workout plans for the authenticated user. " +
-                    "This is currently a stub endpoint that returns an empty list."
+            summary = "Bütün məşq planlarını əldə edin",
+            description = "Autentifikasiya olunmuş istifadəçi üçün bütün mövcud məşq planlarının siyahısını qaytarır. " +
+                    "Bu hal-hazırda boş siyahı qaytaran müvəqqəti ucluqdur."
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "200",
-                    description = "Workout plans retrieved successfully (currently empty)",
+                    description = "Məşq planları uğurla əldə edildi (hal-hazırda boşdur)",
                     content = @Content(schema = @Schema(implementation = List.class))
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "401",
-                    description = "Unauthorized",
+                    description = "İcazə verilmədi",
                     content = @Content
             )
     })
