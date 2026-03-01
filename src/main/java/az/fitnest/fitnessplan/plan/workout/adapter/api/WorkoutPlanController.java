@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Workout Plans", description = "Məşq planlarına baxmaq və idarə etmək üçün ucluqlar")
 public class WorkoutPlanController {
-    
+
     @Operation(
             summary = "Bütün məşq planlarını əldə edin",
             description = "Autentifikasiya olunmuş istifadəçi üçün bütün mövcud məşq planlarının siyahısını qaytarır. " +

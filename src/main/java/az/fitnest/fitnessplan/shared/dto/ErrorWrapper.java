@@ -18,25 +18,6 @@ public class ErrorWrapper {
     @JsonProperty("error")
     private ErrorDetail error;
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ErrorDetail {
-        private String code;
-        private String message;
-        private List<FieldIssue> details;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class FieldIssue {
-        private String field;
-        private String issue;
-    }
-
     public static ErrorWrapper fromErrorResponse(ErrorResponse errorResponse) {
         List<FieldIssue> details = null;
         if (errorResponse.getDetails() != null && errorResponse.getDetails().containsKey("validationErrors")) {
@@ -59,5 +40,24 @@ public class ErrorWrapper {
                         .details(details)
                         .build())
                 .build();
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ErrorDetail {
+        private String code;
+        private String message;
+        private List<FieldIssue> details;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FieldIssue {
+        private String field;
+        private String issue;
     }
 }

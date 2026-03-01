@@ -19,7 +19,8 @@ public class FeignErrorDecoder implements ErrorDecoder {
 
         return switch (response.status()) {
             case 400 -> new BadRequestException("Bad request to downstream service");
-            case 403 -> new az.fitnest.fitnessplan.shared.exception.ForbiddenException("Access denied to downstream service");
+            case 403 ->
+                    new az.fitnest.fitnessplan.shared.exception.ForbiddenException("Access denied to downstream service");
             case 404 -> new ResourceNotFoundException("Resource not found in downstream service");
             case 500, 502, 503, 504 -> new InternalServerException("Downstream service error: " + response.reason());
             default -> defaultDecoder.decode(methodKey, response);
