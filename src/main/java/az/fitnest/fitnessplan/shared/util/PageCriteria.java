@@ -11,13 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PageCriteria {
 
-    @Builder
-
-    @Builder
-
+    private Integer page;
+    private Integer size;
     private String sortBy;
-
-    @Builder
+    private SortDirection sortDir;
 
     public Integer getPage() {
         return page != null && page > 0 ? page - 1 : 0;
