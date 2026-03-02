@@ -1,22 +1,28 @@
 package az.fitnest.fitnessplan.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
+
+import lombok.Data;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorWrapper {
+    private @JsonProperty("error") ErrorDetail error;
+    private String code;
+    private String message;
+    private List<FieldIssue> details;
+    private String field;
+    private String issue;
 
-    @JsonProperty("error")
-    private ErrorDetail error;
+
 
     public static ErrorWrapper fromErrorResponse(ErrorResponse errorResponse) {
         List<FieldIssue> details = null;
@@ -42,22 +48,9 @@ public class ErrorWrapper {
                 .build();
     }
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class ErrorDetail {
-        private String code;
-        private String message;
-        private List<FieldIssue> details;
     }
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class FieldIssue {
-        private String field;
-        private String issue;
     }
 }
