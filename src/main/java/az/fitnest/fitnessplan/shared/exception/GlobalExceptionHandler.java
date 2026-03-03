@@ -9,11 +9,20 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final MessageSource messageSource;
+
+    public GlobalExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException ex, HttpServletRequest request) {
@@ -21,7 +30,7 @@ public class GlobalExceptionHandler {
                 .status(ex.getHttpStatus())
                 .body(ApiResponse.error(ApiError.builder()
                         .code(ex.getErrorCode())
-                        .message(ex.getMessage())
+                        .message(getLocalizedMessage(ex.getErrorCode(), ex.getMessage()))
                         .status(ex.getHttpStatus().value())
                         .path(request.getRequestURI())
                         .timestamp(OffsetDateTime.now())
@@ -38,7 +47,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(ApiError.builder()
                         .code("VALIDATION_ERROR")
-                        .message("Validation failed")
+                        .message(getMessage("error.validation"))
                         .status(HttpStatus.BAD_REQUEST.value())
                         .path(request.getRequestURI())
                         .timestamp(OffsetDateTime.now())
@@ -52,10 +61,45 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error(ApiError.builder()
                         .code("INTERNAL_SERVER_ERROR")
-                        .message("An unexpected error occurred.")
+                        .message(getMessage("error.internal_server_error"))
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .path(request.getRequestURI())
                         .timestamp(OffsetDateTime.now())
                         .build()));
+    }
+
+    private String getLocalizedMessage(String errorCode, String defaultMessage) {
+        String key = "error." + errorCode.toLowerCase();
+        String message = getMessage(key);
+        if (message.equals(key)) {
+            // Try resolving by original errorCode
+            message = getMessage(errorCode);
+            if (message.equals(errorCode)) {
+                return safeMessage(defaultMessage);
+            }
+        }
+        return message;
+    }
+
+    private String safeMessage(String msg) {
+        if (msg == null || msg.isBlank()) {
+            return getMessage("error.unexpected");
+        }
+        // If the message looks like a key, try to resolve it
+        if (msg.startsWith("error.")) {
+            String resolved = getMessage(msg);
+            if (!resolved.equals(msg)) {
+                return resolved;
+            }
+        }
+        return msg;
+    }
+
+    private String getMessage(String code) {
+        try {
+            return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+        } catch (Exception e) {
+            return code; // Fallback to code if message not found
+        }
     }
 }
