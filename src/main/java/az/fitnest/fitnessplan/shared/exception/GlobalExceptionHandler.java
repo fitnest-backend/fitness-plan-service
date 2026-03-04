@@ -39,9 +39,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidationException(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        String details = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
+        java.util.List<java.util.Map<String, String>> fieldIssues = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> java.util.Map.of(
+                        "field", error.getField(),
+                        "issue", safeMessage(error.getDefaultMessage())
+                ))
+                .toList();
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -51,7 +54,20 @@ public class GlobalExceptionHandler {
                         .status(HttpStatus.BAD_REQUEST.value())
                         .path(request.getRequestURI())
                         .timestamp(OffsetDateTime.now())
-                        .details(details)
+                        .details(java.util.Map.of("fieldIssues", fieldIssues))
+                        .build()));
+    }
+
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadableException(org.springframework.http.converter.HttpMessageNotReadableException ex, HttpServletRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ApiError.builder()
+                        .code("BAD_REQUEST")
+                        .message(getMessage("error.invalid_json_format"))
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .path(request.getRequestURI())
+                        .timestamp(OffsetDateTime.now())
                         .build()));
     }
 

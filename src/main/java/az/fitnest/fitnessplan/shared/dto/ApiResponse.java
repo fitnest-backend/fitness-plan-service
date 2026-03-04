@@ -2,34 +2,19 @@ package az.fitnest.fitnessplan.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.util.Map;
 
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
-
-    private T data;
-    private ApiError error;
-
+public record ApiResponse<T>(
+    T data,
+    ApiError error
+) {
     public static <T> ApiResponse<T> success(T data) {
-        return ApiResponse.<T>builder()
-                .data(data)
-                .build();
+        return new ApiResponse<>(data, null);
     }
 
     public static <T> ApiResponse<T> error(ApiError apiError) {
-        return ApiResponse.<T>builder()
-                .error(apiError)
-                .build();
+        return new ApiResponse<>(null, apiError);
     }
 
     @JsonValue
@@ -37,6 +22,6 @@ public class ApiResponse<T> {
         if (error != null) {
             return Map.of("error", error);
         }
-        return data;
+        return data != null ? data : Map.of();
     }
 }
