@@ -10,4 +10,3 @@ public class AlreadyFavoritedException extends BaseException {
         super(message, "ALREADY_FAVORITED", HttpStatus.CONFLICT);
     }
 }
-

@@ -10,4 +10,3 @@ public class FavoriteNotFoundException extends BaseException {
         super(message, "FAVORITE_NOT_FOUND", HttpStatus.NOT_FOUND);
     }
 }
-

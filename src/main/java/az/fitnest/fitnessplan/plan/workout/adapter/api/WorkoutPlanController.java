@@ -15,11 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Controller for managing workout plans.
- * Provides endpoints for browsing and managing workout plans for users.
- * Currently contains stub functionality for future implementation.
- */
 @RestController
 @RequestMapping("/api/v1/workout-plans")
 @RequiredArgsConstructor

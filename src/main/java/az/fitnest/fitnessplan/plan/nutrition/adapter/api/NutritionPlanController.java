@@ -14,10 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Controller for managing nutrition plans.
- * Provides endpoints for browsing, viewing, and activating nutrition plans for users.
- */
 @RestController
 @RequestMapping("/api/v1/nutrition-plans")
 @RequiredArgsConstructor
